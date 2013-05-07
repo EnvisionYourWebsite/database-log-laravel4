@@ -1,3 +1,3 @@
-# Database Logs for Laravel 4
+# Async Database Logs for Laravel 4
 
-Asynchronously logs to the database.
+Asynchronously save your logs to the database.
