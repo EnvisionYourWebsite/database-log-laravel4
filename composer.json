@@ -1,0 +1,28 @@
+{
+    "name": "conradkleinespel/database-log-laravel4",
+    "description": "A Laravel 4 Service Provider that saves logs to the database asynchronously with a queue.",
+    "keywords": [
+        "laravel",
+        "log"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Conrad Kleinespel",
+            "email": "conradk@conradk.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.x"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "ConradKleinespel\\DatabaseLog": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
