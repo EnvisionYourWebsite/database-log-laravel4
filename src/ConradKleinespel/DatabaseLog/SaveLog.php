@@ -2,11 +2,20 @@
 
 use DB;
 
-class SaveLog {
+class SaveLog
+{
 
-	public function fire($job, $data) {
+	protected $app;
 
-		DB::table('logs')->insert($data);
+	public function __construct()
+	{
+		$this->app = app();
+	}
+
+	public function fire($job, $data)
+	{
+
+		$this->app['db']->table('logs')->insert($data);
 
 		$job->delete();
 
