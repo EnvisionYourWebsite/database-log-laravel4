@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use DateTime;
+use Exception;
 
 class DatabaseLogServiceProvider extends ServiceProvider {
 
@@ -24,6 +25,24 @@ class DatabaseLogServiceProvider extends ServiceProvider {
 		// Add a log listener to save logs to the database
 		$this->app['log']->listen(function($level, $message, $context) {
 
+			// Format the information saved to the DB
+			if ($message instanceof Exception) {
+				$message = array(
+					'message' => $message->getMessage(),
+					'code' => $message->getCode(),
+					'trace' => $message->getTraceAsString(),
+					'file' => $message->getFile(),
+					'line' => $message->getLine()
+				);
+			} else {
+				$message = array(
+					'message' => $message
+				);
+			}
+
+			// Seriliaze the message
+			$message = serialize($message);
+
 			// Gather the data that needs to be logged
 			$data = array(
 				'php_sapi_name' => php_sapi_name(),
@@ -34,7 +53,11 @@ class DatabaseLogServiceProvider extends ServiceProvider {
 			);
 
 			// Queue de database insertion so it performs asynchronously
-			$this->app['queue']->push('ConradKleinespel\\DatabaseLog\\SaveLog', $data);
+			$this->app['queue']->push(function($job) use ($data) {
+				app('db')->table('logs')->insert($data);
+
+				$job->delete();
+			});
 
 		});
 	}
