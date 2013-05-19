@@ -19,7 +19,7 @@ class DatabaseLogServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('conrad-kleinespel/database-log');
+		$this->package('conradkleinespel/database-log-laravel4');
 
 		// Add a log listener to save logs to the database
 		$this->app['log']->listen(function($level, $message, $context) {
